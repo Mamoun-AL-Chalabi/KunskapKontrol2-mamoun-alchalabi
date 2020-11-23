@@ -1,5 +1,86 @@
 
+window.addEventListener('load', ()=>{
+  let long;
+  let lat;
+/*...............Function to get the current loctioan ...............*/
+  if(navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(pos=>{
+          long = pos.coords.longitude;
+          lat = pos.coords.latitude;
 
+          const api = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&units=metric&appid=${apiKey}`
+
+
+          fetch(api)
+          .then(response =>{
+            return response.json();
+          })
+
+          .then(data =>{
+            console.log(data);
+                 /*...............bring all informatino from Html and rpalce it with data we get it from server...............*/       
+                 let cit =document.querySelector('.city');
+                 cit.innerHTML=`${data.name}`;
+   
+                 let today = new Date();
+   
+                 let date = document.querySelector('.date');
+                 date.innerHTML=dateToday(today);
+   
+                 let temp=document.querySelector('.temp');
+   
+                 temp.innerHTML=`${Math.round(data.main.temp)}<span>°c</span>`;
+                 
+                 let tempcolor=data.main.temp;
+   
+   
+    /*...............if statment for color change depend on the temp ..............*/  
+   
+                 if(tempcolor <= 5) {
+                   body.style.background = 'radial-gradient(circle, rgba(124,180,246,1) 4%, rgba(226,227,237,1) 94%)';
+               } 
+               
+                   else if (tempcolor <=10) {
+                       body.style.background = 'radial-gradient(circle, rgba(1,108,233,1) 4%, rgba(226,227,237,1) 94%)';
+                   }
+   
+                   else if(tempcolor >10 && tempcolor <=20) {
+                       body.style.background ='linear-gradient(0deg, rgba(34,193,195,1) 13%, rgba(253,187,45,1) 89%)'
+                   }
+   
+               else {
+                   body.style.background = 'linear-gradient(90deg, rgba(217,91,32,1) 8%, rgba(222,6,6,1) 100%)';
+               } 
+   
+   
+   
+                 let weather =document.querySelector('.weather');
+   
+                 weather.innerHTML = `${data.weather[0].description}`;
+                 
+                 let winhum = document.querySelector('.win-hum'
+                 );
+                 
+                 winhum.innerHTML=`💨 ${Math.round(data.wind.speed)} m/s 💧 ${Math.round(data.main.humidity)} %`;
+                 
+                 let icon =document.querySelector('.tem')
+                 
+                 icon.src=`http://openweathermap.org/img/wn/${data.weather[0].icon}@4x.png`
+          })
+
+
+
+        });
+
+
+
+
+  }else{
+    
+    console.log('hi')
+  }
+
+});
 
 /*...............Select Basic Element in html...............*/
 
@@ -37,7 +118,7 @@ function setQuery(evt) {
         //kod 404 "not found" we get an error
         
         else if(response.status === 404){
-            throw 'Please write a city / The name of city is wrong';
+            throw ' The name of city is wrong';
         }
 
         //kod 401 "if the server down
@@ -45,6 +126,11 @@ function setQuery(evt) {
         else if(response.status === 401){
             throw  'Server is down';
         }
+
+        else if(response.status === 400){
+          throw  'Please write City';
+      }
+
       })
       .then(
      /*...............Function for get the all informtion from our Url ...............*/
@@ -95,7 +181,7 @@ function setQuery(evt) {
               let winhum = document.querySelector('.win-hum'
               );
               
-              winhum.innerHTML=`${Math.round(data.wind.speed)} m/s / ${Math.round(data.main.humidity)} %`;
+              winhum.innerHTML=`💨 ${Math.round(data.wind.speed)} m/s 💧 ${Math.round(data.main.humidity)} %`;
               
               let icon =document.querySelector('.tem')
               
