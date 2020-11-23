@@ -115,21 +115,29 @@ function setQuery(evt) {
             return response.json();
         }
         
+
+
+        
+        else if(response.status === 400){
+          throw  'Please write City';
+      }
+
+
+        //kod 401 "if the server down
+        
+        else if(response.status === 401){
+          throw  'Server is down';
+      }
+        
+
         //kod 404 "not found" we get an error
         
         else if(response.status === 404){
             throw ' The name of city is wrong';
         }
 
-        //kod 401 "if the server down
-        
-        else if(response.status === 401){
-            throw  'Server is down';
-        }
 
-        else if(response.status === 400){
-          throw  'Please write City';
-      }
+
 
       })
       .then(
