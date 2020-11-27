@@ -1,12 +1,16 @@
 
+
+
 window.addEventListener('load', ()=>{
   let long;
   let lat;
 /*...............Function to get the current loctioan ...............*/
-  if(navigator.geolocation){
+
+if(navigator.geolocation){
         navigator.geolocation.getCurrentPosition(pos=>{
           long = pos.coords.longitude;
           lat = pos.coords.latitude;
+          
 
           const api = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&units=metric&appid=${apiKey}`
 
@@ -17,7 +21,7 @@ window.addEventListener('load', ()=>{
           })
 
           .then(data =>{
-            console.log(data);
+            
                  /*...............bring all informatino from Html and rpalce it with data we get it from server...............*/       
                  let cit =document.querySelector('.city');
                  cit.innerHTML=`${data.name}`;
@@ -34,7 +38,7 @@ window.addEventListener('load', ()=>{
                  let tempcolor=data.main.temp;
    
    
-    /*...............if statment for color change depend on the temp ..............*/  
+               /*...............if statment for color change depend on the temp ..............*/  
    
                  if(tempcolor <= 5) {
                    body.style.background = 'radial-gradient(circle, rgba(124,180,246,1) 4%, rgba(226,227,237,1) 94%)';
@@ -75,9 +79,10 @@ window.addEventListener('load', ()=>{
 
 
 
-  }else{
-    
-    console.log('hi')
+  }else if(navigator.geolocation===false){
+    let date = document.querySelector('.date');
+    date.innerHTML='hello filip';
+    console.log(date)
   }
 
 });
