@@ -234,7 +234,6 @@ function setQuery(evt) {
 
 
 
-
 /*...............Function to get the date of today...............*/
 
 
